@@ -35,7 +35,7 @@ Dropped (upstream-only files, not needed by DSH):
 
 Port-authored additions (not in this table): `package.json`, `lib/`, `test/`,
 `README.md`, `README.zh-CN.md`, `VERIFICATION.md`, `NOTICE`, `UPSTREAM.md`,
-`cordis.patch.yml`, and the `docs/` directory. These are the only additions to
+`cordis.patch.yml`, `pnpm-lock.yaml`, and the `docs/` directory. These are the only additions to
 the upstream tree beyond the git repository structure itself.
 
 Every file in `skills/` and `templates/` can be re-verified with:
