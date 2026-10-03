@@ -1,0 +1,16 @@
+dsh-linkedin-agent
+==================
+
+Port of Jakeschincariol/linkedin-agent-skill
+(https://github.com/Jakeschincariol/linkedin-agent-skill)
+to DeepSeek Harness 0.2.0-rc.2.
+
+Port author: mubaid (https://github.com/mubaid), MIT.
+
+Upstream:
+  Author: Jake Schincariol (https://opusjake.ai)
+  License: MIT (Copyright (c) 2026 Jake Schincariol)
+
+All data files, skill bodies and scripts are reproduced from upstream
+unchanged (see UPSTREAM.md). The plugin source (`lib/index.js`, `cordis.patch.yml`,
+`package.json`, and all tests/docs) is written by the port author, MIT.

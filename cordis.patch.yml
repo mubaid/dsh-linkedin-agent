@@ -1,0 +1,10 @@
+# dsh-linkedin-agent — eleven LinkedIn agent skills from
+# Jakeschincariol/linkedin-agent-skill (MIT)
+#
+# Registers the 'linkedin-agent' skill provider (dsh-skill-filesystem) that
+# serves the 11 skills bundled in the root `skills/` under provider name
+# 'linkedin-agent'. Skills become /li-* user-invocable commands and are
+# invoked through the skill tool.
+- insert:
+    - id: linkedin-agent
+      name: 'dsh-linkedin-agent'
