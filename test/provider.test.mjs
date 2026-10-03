@@ -7,8 +7,10 @@
 import assert from "node:assert/strict";
 import { apply, inject, name } from "../lib/index.js";
 
+// Registered providers captured by fakeCtx.registerProvider (module scope).
+const registered = [];
+
 function fakeCtx() {
-  const registered = [];
   return {
     skills: {
       registerProvider(factory) {
@@ -27,9 +29,6 @@ function fakeCtx() {
       return () => {};
     },
     logger: { info() {}, debug() {}, warn() {}, error() {} },
-    get registered() {
-      return registered;
-    },
   };
 }
 
@@ -52,8 +51,8 @@ test("exports inject", () => {
 test("apply registers the skill provider with the right name", () => {
   const ctx = fakeCtx();
   apply(ctx);
-  assert.equal(ctx.registered.length, 1, "exactly one provider registered");
-  assert.equal(ctx.registered[0].name, "linkedin-agent", "provider name is 'linkedin-agent'");
+  assert.equal(registered.length, 1, "exactly one provider registered");
+  assert.equal(registered[0].name, "linkedin-agent", "provider name is 'linkedin-agent'");
 });
 
 console.log("  all provider tests passed");
