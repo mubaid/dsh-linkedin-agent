@@ -6,18 +6,52 @@
   "description": "Eleven LinkedIn agent skills for DeepSeek Harness (port of Jakeschincariol/linkedin-agent-skill), MIT.",
   "license": "MIT",
   "author": "mubaid <mubaid+dev@users.noreply.github.com>",
-  "repository": { "type": "git", "url": "https://github.com/mubaid/dsh-linkedin-agent" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mubaid/dsh-linkedin-agent"
+  },
   "homepage": "https://github.com/mubaid/dsh-linkedin-agent",
-  "bugs": { "url": "https://github.com/mubaid/dsh-linkedin-agent/issues" },
+  "bugs": {
+    "url": "https://github.com/mubaid/dsh-linkedin-agent/issues"
+  },
   "keywords": [
-    "deepseek-harness", "dsh", "dsh-plugin", "linkedin", "agent-skills",
-    "ai-humanizer", "content-marketing"
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "linkedin",
+    "agent-skills",
+    "ai-humanizer",
+    "content-marketing"
   ],
-  "engines": { "node": ">=22.19", "dsh": "0.2.0-rc.2" },
-  "peerDependencies": { "@deepseek-ai/dsh-skill-filesystem": ">=0.0.1-rc.2" },
-  "devDependencies": { "@deepseek-ai/dsh-skill-filesystem": "0.1.0-rc.3" },
-  "scripts": { "test": "node --test test/*.test.mjs" },
-  "files": ["lib", "skills", "templates", "cordis.patch.yml", "README.md", "LICENSE"],
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
-  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org" }
+  "engines": {
+    "node": ">=22.19",
+    "dsh": "0.2.0-rc.2"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-skill-filesystem": ">=0.0.1-rc.2"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-app-boot": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-skill-filesystem": "0.1.0-rc.3"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "files": [
+    "lib",
+    "skills",
+    "templates",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
 }

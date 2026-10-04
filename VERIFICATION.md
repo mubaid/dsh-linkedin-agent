@@ -58,10 +58,27 @@ Verified against DeepSeek Harness `0.2.0-rc.2`.
    `package.json` pins the same version.
 
 7. **`gh api repos/mubaid/dsh-linkedin-agent --jq '.license.spdx_id'` —
-   pending (read after push).** Expected `MIT`. `LICENSE` holds the grant
-   text plus one port-author copyright line and nothing else; upstream grant
-   text is byte-identical per `UPSTREAM.md`. Detection is asynchronous, so
-   re-read before claiming it.
+   green.** Returns `MIT` (`key: mit`, read 2026-10-04, no detection lag
+   observed). `LICENSE` holds the grant text plus one port-author copyright
+   line and nothing else; upstream grant text is byte-identical per
+   `UPSTREAM.md`.
+
+8. **Human acceptance on a real DSH web instance — pending (new
+   non-waivable gate, PORTING-RULES.md §7).** No port is done, published, or
+   listed without an explicit human accept recorded here (date,
+   instance/profile, version or commit, what was tried, accept or reject
+   with reasons). This plugin has not yet had that session.
+
+## Compat contract (gate 6 strong form, PORTING-RULES.md §7/§12)
+
+`test/compat.test.mjs` calls the real `evaluatePluginCompatibility` from
+`@deepseek-ai/dsh-app-boot` (devDependency, never a stub): the shipped peer
+range passes on `0.2.0-rc.2` with no exemption, a bogus `>=9.9.9` range is
+rejected (record returned, `exempted: false`), and the shipped range passes
+on `0.2.1-alpha.1`. Non-vacuity: poisoning the shipped manifest to
+`>=9.9.9` flips the suite red. No CI matrix — no second SDK leg exists on
+npm to run it against, and the sibling shipped ports carry no workflows
+either.
 
 ## Not verified
 
