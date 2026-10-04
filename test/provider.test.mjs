@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Smoke test for dsh-linkedin-agent entrypoint:
- *  1. exports name = 'linkedin-agent', inject = []
+ *  1. exports name = 'linkedin-agent', inject = ['skills']
  *  2. apply(ctx) registers a skill provider named 'linkedin-agent'
  */
 import assert from "node:assert/strict";
@@ -45,7 +45,7 @@ test("exports name", () => {
 });
 
 test("exports inject", () => {
-  assert.deepStrictEqual(inject, []);
+  assert.deepStrictEqual(inject, ["skills"], "plugin waits for the DSH skill service");
 });
 
 test("apply registers the skill provider with the right name", () => {
