@@ -11,39 +11,40 @@ Verified against DeepSeek Harness `0.2.0-rc.2`.
    the fix (missing `inject` assertion failed; a stray dir failed the tree
    test), so neither is vacuous.
 
-2. **`dsh plugin add` — locally green, GitHub pending.** The plugin installs
-   read-only from a local `file:` source (`dsh plugin --profile scratch list`
-   shows `dsh-linkedin-agent` with no build step and no build permission
-   prompts). The `github:mubaid/dsh-linkedin-agent` form is untestable until
-   the repository exists on GitHub, so it stays pending to push.
+2. **`dsh plugin add github:mubaid/dsh-linkedin-agent` — green.** Installed
+   into a clean `ghcheck` profile (`dsh-base` + `dsh-headless` bundles) with
+   no build step and no build permission prompts (`Packages: +1`,
+   `Done in 2.8s`). The installed tree carries the final code
+   (`inject = ["skills"]`).
 
 3. **`dsh --profile scratch --dump-config` — green.** The composed tree shows
    `# == dsh-linkedin-agent` with `- id: linkedin-agent / name:
    dsh-linkedin-agent`, alongside the base bundle's `skill`,
    `skill-filesystem`, and `tool-skill` rows.
 
-4. **Profile boots with the plugin active — green config/boot evidence; live
-   agent turn not observed.** `--dump-config` and `--dump-config-schema`
-   compose cleanly with the layer present (the schema dump carries the
-   `linkedin-agent` row). A live `agent` boot against the local mock LLM was
-   attempted repeatedly and stayed silent for 100s+ with no request reaching
-   the mock server, so no session output can be claimed. What *was* observed
-   live: the previous failure mode is gone — with `inject = []` the boot
-   printed `warning: 1 entry did not activate` /
+4. **Profile boots with the plugin active — green.** A live `agent` boot of
+   the `ghcheck` profile (with the GitHub-installed copy) against the local
+   mock LLM completed turns: the mock server logged completed `/v1/messages`
+   requests and the run printed its result. No `did not activate` warning in
+   the boot log or the persisted session transcript — with `inject = []` the
+   same shape of boot printed `warning: 1 entry did not activate` /
    `cannot get property "skills" without inject`; with `inject = ["skills"]`
-   that warning no longer appears in boots that reach layer application.
+   that failure mode is gone.
 
-5. **Behaviour — green via real skill-stack harness (no model call).** A real
-   cordis `Context` was composed in DSH layer order: `SkillRegistry` (the
-   `skills` service), then a `dsh-skill-filesystem.apply` row injecting
-   `['skills']`, then the repo's *actual* plugin module (`name`, `inject`,
-   `apply` all imported from `lib/index.js`). `ctx.skills.list()` returned
-   all 11 skills (`li-audit li-carousel li-comment li-dm li-human li-inbox
-   li-plan li-post li-profile li-reply li-repurpose`) under provider
-   `linkedin-agent`, nothing missing, nothing extra. This uses the real
-   `SkillRegistry` and the real filesystem provider from the `0.2.0-rc.2`
-   checkout — only the surrounding `Context` is a harness, and the harness
-   asserts on discovery, not on a stub.
+5. **Behaviour — green, twice over.** (a) A real cordis `Context` was
+   composed in DSH layer order: `SkillRegistry` (the `skills` service), then
+   a `dsh-skill-filesystem.apply` row injecting `['skills']`, then the repo's
+   *actual* plugin module (`name`, `inject`, `apply` all imported from
+   `lib/index.js`). `ctx.skills.list()` returned all 11 skills (`li-audit
+   li-carousel li-comment li-dm li-human li-inbox li-plan li-post li-profile
+   li-reply li-repurpose`) under provider `linkedin-agent`, nothing missing,
+   nothing extra. This uses the real `SkillRegistry` and the real filesystem
+   provider from the `0.2.0-rc.2` checkout — only the surrounding `Context`
+   is a harness, and the harness asserts on discovery, not on a stub.
+   (b) In the live session above, the model prompt's `<available_skills>`
+   block served all 11 `li-*` skills with their full upstream descriptions.
+   The mock's reply text itself is canned (`mock response recovered`), so the
+   transcript proves prompt availability, and (a) proves registry discovery.
 
    Required finding, recorded so the next port does not repeat the detour:
    `inject: ["skills"]` is mandatory. Without it, `ctx.skills` access inside
@@ -64,8 +65,9 @@ Verified against DeepSeek Harness `0.2.0-rc.2`.
 
 ## Not verified
 
-- A live agent turn that invokes one of the 11 skills end-to-end (blocked on
-  the silent-boot issue in gate 4, not on the plugin).
+- A live agent turn that *invokes* one of the 11 skills end-to-end — the
+  session proves the skills are served in the prompt, not that the mock model
+  chose to call one.
 - The `/li-human` Python path in-session — the `detect.py` / `humanize.py`
   scripts ship byte-identical as data files and run wherever a Python
   execution tool exists.
